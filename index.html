@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Rádio Som & Mídia - Igreja</title>
+  <script src="https://unpkg.com"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background-color: #0f172a; color: #f8fafc; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    header { background-color: #1e293b; padding: 15px; text-align: center; border-bottom: 1px solid #334155; }
+    header h1 { font-size: 1.1rem; color: #38bdf8; }
+    header p { font-size: 0.8rem; color: #94a3b8; margin-top: 3px; }
+    
+    /* Tela de Login */
+    #login-screen { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 25px; gap: 15px; }
+    input, select { padding: 14px; border-radius: 10px; border: 1px solid #334155; background: #1e293b; color: white; font-size: 1rem; }
+    button { padding: 15px; border-radius: 10px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.2s; }
+    .btn-primary { background: #0284c7; color: white; }
+    .btn-primary:active { background: #0369a1; }
+
+    /* Tela Principal do Rádio */
+    #app-screen { display: none; flex: 1; flex-direction: column; justify-content: space-between; padding: 15px; overflow-y: auto; }
+    .status-bar { background: #1e293b; padding: 10px; border-radius: 8px; font-size: 0.85rem; display: flex; justify-content: space-between; align-items: center; }
+    .badge { background: #10b981; color: #022c22; padding: 3px 8px; border-radius: 12px; font-weight: bold; font-size: 0.75rem; }
+
+    /* Botão Gigante PTT */
+    .ptt-container { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 15px 0; }
+    #ptt-btn { width: 170px; height: 170px; border-radius: 50%; background: radial-gradient(circle, #ef4444, #b91c1c); color: white; font-size: 1.1rem; box-shadow: 0 0 25px rgba(239, 68, 68, 0.4); border: 6px solid #7f1d1d; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+    #ptt-btn.talking { background: radial-gradient(circle, #22c55e, #15803d); border-color: #14532d; box-shadow: 0 0 35px rgba(34, 197, 94, 0.7); transform: scale(0.96); }
+    .ptt-hint { margin-top: 10px; font-size: 0.85rem; color: #94a3b8; }
+
+    /* Alertas Rápidos */
+    .alerts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .alert-btn { background: #334155; color: #f8fafc; padding: 12px 8px; font-size: 0.85rem; border: 1px solid #475569; }
+    .alert-btn:active { background: #f59e0b; color: #000; }
+
+    /* Mural de Avisos e Chat */
+    .log-box { background: #1e293b; border-radius: 10px; padding: 10px; height: 150px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; border: 1px solid #334155; }
+    .log-item { font-size: 0.85rem; padding: 6px 10px; border-radius: 6px; background: #0f172a; }
+    .log-alert { background: #78350f; border-left: 4px solid #f59e0b; color: #fef3c7; font-weight: bold; }
+    .chat-input { display: flex; gap: 8px; margin-top: 8px; }
+    .chat-input input { flex: 1; padding: 10px; font-size: 0.9rem; }
+    .chat-input button { padding: 10px 15px; background: #0284c7; color: white; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🎙️ RÁDIO SOM & MÍDIA</h1>
+    <p>Comunicação Interna da Igreja</p>
+  </header>
+
+  <!-- TELA DE ENTRADA -->
+  <div id="login-screen">
+    <label>Sua Função no Culto:</label>
+    <select id="role-select">
+      <option value="Mesa de Som">🎛️ Mesa de Som</option>
+      <option value="Palco / Retorno">🎤 Palco / Retorno</option>
+      <option value="Transmissão / Vídeo">📹 Transmissão / Vídeo</option>
+      <option value="Projeção / Letras">💻 Projeção / Letras</option>
+      <option value="Coordenação">📋 Coordenação</option>
+    </select>
+
+    <label>Nome da Sala da Igreja (todos devem usar o mesmo):</label>
+    <input type="text" id="room-input" value="igreja-som-principal" placeholder="Ex: igreja-central">
+
+    <button class="btn-primary" onclick="entrarNaSala()">Entrar no Rádio</button>
+  </div>
+
+  <!-- TELA DO RÁDIO -->
+  <div id="app-screen">
+    <div class="status-bar">
+      <span id="user-display">Conectado</span>
+      <span class="badge" id="peers-count">Online: 1</span>
+    </div>
+
+    <div class="ptt-container">
+      <button id="ptt-btn">SEGURE PARA<br>FALAR</button>
+      <span class="ptt-hint" id="ptt-status">Pronto para transmitir</span>
+    </div>
+
+    <div>
+      <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 6px;">ALERTAS RÁPIDOS (TELA):</p>
+      <div class="alerts-grid">
+        <button class="alert-btn" onclick="enviarAlerta('🔊 Mais retorno no palco')">🔊 Mais Retorno</button>
+        <button class="alert-btn" onclick="enviarAlerta('🎤 Microfone falhando / microfonia')">🎤 Falha no Mic</button>
+        <button class="alert-btn" onclick="enviarAlerta('🔋 Trocar bateria urgente')">🔋 Bateria Fraca</button>
+        <button class="alert-btn" onclick="enviarAlerta('🙏 Atenção: Pastor vai subir')">🙏 Pastor no Palco</button>
+      </div>
+    </div>
+
+    <div>
+      <div class="log-box" id="log-box">
+        <div class="log-item">Sistema iniciado. Use fones de ouvido para evitar microfonia.</div>
+      </div>
+      <div class="chat-input">
+        <input type="text" id="msg-input" placeholder="Digite um aviso rápido...">
+        <button onclick="enviarTexto()">Enviar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Áudios ocultos para receber voz -->
+  <div id="audio-container"></div>
+
+  <script>
+    let peer;
+    let myRole = "";
+    let roomPrefix = "";
+    let localStream;
+    let connections = {};
+    let calls = {};
+    const maxSlots = 8; // Até 8 pessoas simultâneas na sala
+
+    async function entrarNaSala() {
+      myRole = document.getElementById('role-select').value;
+      roomPrefix = document.getElementById('room-input').value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+      
+      if (!roomPrefix) return alert("Digite o nome da sala!");
+
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+        // Começa com o microfone mutado (modo Walkie-Talkie)
+        localStream.getAudioTracks()[0].enabled = false;
+      } catch (err) {
+        alert("Permita o acesso ao microfone no navegador para usar o rádio!");
+        return;
+      }
+
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app-screen').style.display = 'flex';
+      document.getElementById('user-display').innerText = myRole;
+
+      conectarSlot(1);
+    }
+
+    function conectarSlot(slot) {
+      if (slot > maxSlots) {
+        alert("Sala cheia (máximo 8 aparelhos conectados).");
+        return;
+      }
+
+      const myId = `${roomPrefix}-slot-${slot}`;
+      peer = new Peer(myId);
+
+      peer.on('open', (id) => {
+        adicionarLog(`Você entrou como: ${myRole}`);
+        descobrirEquipe(id);
+      });
+
+      peer.on('error', (err) => {
+        if (err.type === 'unavailable-id') {
+          peer.destroy();
+          conectarSlot(slot + 1); // Tenta o próximo canal livre
+        }
+      });
+
+      // Receber mensagens/alertas
+      peer.on('connection', (conn) => {
+        configurarConexaoDados(conn);
+      });
+
+      // Receber áudio
+      peer.on('call', (call) => {
+        call.answer(localStream);
+        configurarChamadaAudio(call);
+      });
+    }
+
+    function descobrirEquipe(myId) {
+      for (let i = 1; i <= maxSlots; i++) {
+        const targetId = `${roomPrefix}-slot-${i}`;
+        if (targetId !== myId) {
+          const conn = peer.connect(targetId);
+          conn.on('open', () => {
+            configurarConexaoDados(conn);
+            conn.send({ type: 'info', sender: myRole, text: 'entrou no rádio.' });
+          });
+
+          const call = peer.call(targetId, localStream);
+          if (call) configurarChamadaAudio(call);
+        }
+      }
+    }
+
+    function configurarConexaoDados(conn) {
+      connections[conn.peer] = conn;
+      atualizarContador();
+
+      conn.on('data', (data) => {
+        if (data.type === 'alert') {
+          adicionarLog(`🚨 ${data.sender}: ${data.text}`, true);
+          if (navigator.vibrate) navigator.vibrate([300, 100, 300]); // Vibra o celular
+        } else if (data.type === 'chat') {
+          adicionarLog(`💬 ${data.sender}: ${data.text}`);
+        } else if (data.type === 'info') {
+          adicionarLog(`🟢 ${data.sender} ${data.text}`);
+        }
+      });
+
+      conn.on('close', () => {
+        delete connections[conn.peer];
+        atualizarContador();
+      });
+    }
+
+    function configurarChamadaAudio(call) {
+      calls[call.peer] = call;
+      call.on('stream', (remoteStream) => {
+        let audio = document.getElementById(`audio-${call.peer}`);
+        if (!audio) {
+          audio = document.createElement('audio');
+          audio.id = `audio-${call.peer}`;
+          audio.autoplay = true;
+          document.getElementById('audio-container').appendChild(audio);
+        }
+        audio.srcObject = remoteStream;
+      });
+    }
+
+    function atualizarContador() {
+      const total = Object.keys(connections).length + 1;
+      document.getElementById('peers-count').innerText = `Online: ${total}`;
+    }
+
+    // Controle do Botão Push-to-Talk (Segurar para Falar)
+    const pttBtn = document.getElementById('ptt-btn');
+    const pttStatus = document.getElementById('ptt-status');
+
+    function comecarFalar(e) {
+      e.preventDefault();
+      if (!localStream) return;
+      localStream.getAudioTracks()[0].enabled = true;
+      pttBtn.classList.add('talking');
+      pttBtn.innerHTML = "TRANSMITINDO<br>VOZ...";
+      pttStatus.innerText = "Microfone ABERTO - Fale agora";
+      pttStatus.style.color = "#22c55e";
+    }
+
