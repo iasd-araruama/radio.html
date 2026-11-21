@@ -3,215 +3,207 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Som & Mídia - IASD Araruama</title>
+  <title>ServiceComms - IASD Araruama</title>
   <script src="https://unpkg.com"></script>
   <style>
     :root {
-      --wa-bg: #0b141a;
-      --wa-header: #202c33;
-      --wa-input-bg: #2a3942;
-      --wa-green: #00a884;
-      --wa-green-dark: #005c4b;
-      --wa-bubble-other: #202c33;
-      --wa-text: #e9edef;
-      --wa-muted: #8696a0;
+      --bg: #0b0f19;
+      --surface: #131b2e;
+      --surface-light: #1c263e;
+      --accent: #3b82f6;
+      --accent-glow: rgba(59, 130, 246, 0.35);
       --danger: #ef4444;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --border: #232f4b;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body { background-color: var(--wa-bg); color: var(--wa-text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: var(--bg); color: var(--text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-    /* Tela de Login */
+    /* Tela de Entrada */
     #login-screen {
       flex: 1; display: flex; flex-direction: column; justify-content: center;
       padding: 24px; max-width: 420px; margin: 0 auto; width: 100%;
     }
-    .login-card {
-      background: var(--wa-header); padding: 26px; border-radius: 16px;
-      display: flex; flex-direction: column; gap: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    .card-login {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+      padding: 28px 24px; display: flex; flex-direction: column; gap: 18px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
     }
-    .login-title { text-align: center; margin-bottom: 6px; }
-    .login-title h2 { font-size: 1.2rem; color: #fff; }
-    .login-title p { font-size: 0.8rem; color: var(--wa-green); margin-top: 4px; }
-    label { font-size: 0.78rem; color: var(--wa-muted); font-weight: 600; margin-bottom: 6px; display: block; }
+    .logo-box { display: flex; align-items: center; gap: 12px; }
+    .logo-icon {
+      width: 46px; height: 46px; border-radius: 14px;
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
+    }
+    .logo-box h1 { font-size: 1.15rem; font-weight: 800; color: #fff; }
+    .logo-box p { font-size: 0.78rem; color: var(--accent); font-weight: 600; }
+    label { font-size: 0.75rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block; }
     input, select {
-      padding: 13px 14px; border-radius: 10px; border: 1px solid #374151;
-      background: var(--wa-bg); color: white; font-size: 0.95rem; width: 100%; outline: none;
+      width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--bg); color: #fff; font-size: 0.95rem; outline: none;
     }
-    .btn-enter {
-      background: var(--wa-green); color: #0b141a; padding: 14px; border-radius: 10px;
-      border: none; font-weight: 700; font-size: 1rem; cursor: pointer; margin-top: 6px;
+    input:focus, select:focus { border-color: var(--accent); }
+    .btn-start {
+      background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;
+      border: none; padding: 15px; border-radius: 12px; font-weight: 700;
+      font-size: 1rem; cursor: pointer; box-shadow: 0 6px 20px var(--accent-glow);
     }
 
-    /* App Principal Estilo WhatsApp */
+    /* App Principal */
     #app-screen { display: none; flex: 1; flex-direction: column; height: 100vh; }
 
-    /* Cabeçalho do Grupo */
     header {
-      background: var(--wa-header); padding: 10px 14px;
+      background: var(--surface); padding: 12px 16px; border-bottom: 1px solid var(--border);
       display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid #2a3942; z-index: 10;
     }
-    .group-info { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
-    .group-avatar {
-      width: 40px; height: 40px; border-radius: 50%; background: var(--wa-green);
-      color: #0b141a; display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; font-weight: bold; flex-shrink: 0;
-    }
-    .group-text { min-width: 0; }
-    .group-text h1 { font-size: 0.98rem; font-weight: 600; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .group-status { font-size: 0.75rem; color: var(--wa-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .group-status.speaking { color: #25d366; font-weight: 700; }
-
-    .header-actions { display: flex; gap: 8px; }
-    .icon-btn {
-      background: var(--wa-input-bg); color: var(--wa-text); border: none;
-      padding: 7px 10px; border-radius: 8px; font-size: 0.78rem; font-weight: 600; cursor: pointer;
+    .header-left h2 { font-size: 0.95rem; font-weight: 700; color: #fff; }
+    .header-left span { font-size: 0.75rem; color: var(--accent); font-weight: 600; }
+    .status-badge {
+      background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.4);
+      color: #34d399; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
     }
 
-    /* Faixa de Alertas Rápidos (Deslizável) */
-    .quick-bar {
-      background: #111b21; padding: 8px 10px; display: flex; gap: 8px;
-      overflow-x: auto; border-bottom: 1px solid #202c33; scrollbar-width: none;
-    }
-    .quick-bar::-webkit-scrollbar { display: none; }
-    .chip-alert {
-      background: var(--wa-header); color: #e9edef; border: 1px solid #374151;
-      padding: 6px 12px; border-radius: 16px; font-size: 0.78rem; white-space: nowrap;
-      cursor: pointer; flex-shrink: 0;
-    }
-    .chip-alert:active { background: #f59e0b; color: #000; border-color: #f59e0b; }
+    /* Abas */
+    .tab-pane { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+    .tab-pane.active { display: flex; }
 
-    /* Área de Conversa (Papel de Parede Dark WA) */
-    .chat-area {
-      flex: 1; padding: 12px 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
-      background-color: #0b141a;
-      background-image: radial-gradient(#1f2c34 1px, transparent 1px);
-      background-size: 20px 20px;
+    /* ================= ABA 1: RÁDIO + CHAT UNIFICADOS ================= */
+    .main-grid {
+      flex: 1; display: flex; flex-direction: column; padding: 12px 14px;
+      gap: 10px; overflow-y: auto;
     }
 
-    .bubble {
-      max-width: 82%; padding: 8px 12px; border-radius: 12px; font-size: 0.9rem;
-      line-height: 1.38; position: relative; word-wrap: break-word;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    /* Lista de Online */
+    .online-strip { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+    .online-strip::-webkit-scrollbar { display: none; }
+    .user-chip {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 5px 10px; border-radius: 20px; font-size: 0.75rem;
+      display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0;
     }
-    .bubble-mine {
-      align-self: flex-end; background: var(--wa-green-dark); color: #e9edef;
-      border-top-right-radius: 2px;
-    }
-    .bubble-other {
-      align-self: flex-start; background: var(--wa-bubble-other); color: #e9edef;
-      border-top-left-radius: 2px;
-    }
-    .bubble-alert {
-      align-self: center; max-width: 92%; background: #3b2608;
-      border: 1px solid #f59e0b; color: #fde68a; text-align: center;
-      font-weight: 600; font-size: 0.85rem; padding: 10px 14px;
-    }
-    .bubble-sys {
-      align-self: center; background: #182229; color: var(--wa-muted);
-      font-size: 0.74rem; padding: 5px 12px; border-radius: 8px; text-align: center;
-    }
-    .sender-name { font-size: 0.74rem; font-weight: 700; color: #53bdeb; display: block; margin-bottom: 2px; }
-    .msg-meta { font-size: 0.65rem; color: rgba(233, 237, 239, 0.6); float: right; margin-left: 10px; margin-top: 4px; }
+    .green-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
 
-    /* Barra Inferior Estilo WhatsApp (Texto + Botão Rádio/Enviar) */
-    .bottom-bar {
-      background: var(--wa-bg); padding: 8px 10px; display: flex; align-items: center; gap: 8px;
-      padding-bottom: max(8px, env(safe-area-inset-bottom));
+    /* Card do Rádio PTT */
+    .radio-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+      padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 10px;
+      position: relative;
     }
-    .input-box {
-      flex: 1; background: var(--wa-header); border-radius: 24px;
-      display: flex; align-items: center; padding: 4px 14px;
+    .speaker-indicator {
+      width: 100%; text-align: center; padding: 6px 10px; border-radius: 10px;
+      background: var(--bg); font-size: 0.78rem; color: var(--muted); font-weight: 600;
     }
-    .input-box input {
-      background: transparent; border: none; padding: 10px 4px; color: white;
-      font-size: 0.95rem; width: 100%; outline: none;
-    }
-    .action-circle {
-      width: 48px; height: 48px; border-radius: 50%; background: var(--wa-green);
-      color: #0b141a; border: none; font-size: 1.3rem; display: flex;
-      align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
-      user-select: none; -webkit-user-select: none; touch-action: manipulation;
-      transition: transform 0.15s, background 0.15s;
-    }
-    .action-circle.recording {
-      background: var(--danger); color: white; transform: scale(1.22);
-      box-shadow: 0 0 20px rgba(239, 68, 68, 0.7);
+    .speaker-indicator.live {
+      background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4);
     }
 
-    /* Aviso Flutuante de Transmissão de Voz */
-    #live-banner {
-      display: none; background: #005c4b; color: #fff; padding: 8px 14px;
-      font-size: 0.82rem; font-weight: 600; text-align: center;
-      align-items: center; justify-content: center; gap: 8px;
+    #ptt-btn {
+      width: 132px; height: 132px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ef4444, #991b1b);
+      border: 5px solid #450a0a; color: #fff; font-weight: 800; font-size: 0.85rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+      cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: manipulation;
+      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.35); transition: 0.15s;
+    }
+    #ptt-btn.talking {
+      background: radial-gradient(circle at 30% 30%, #10b981, #065f46);
+      border-color: #022c22; transform: scale(0.95);
+      box-shadow: 0 0 35px rgba(16, 185, 129, 0.65);
+    }
+    #ptt-btn span.icon { font-size: 1.7rem; }
+
+    /* Botões de Alerta */
+    .alerts-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; width: 100%; }
+    .btn-alert {
+      background: var(--surface-light); border: 1px solid var(--border); color: #e2e8f0;
+      padding: 9px 8px; border-radius: 10px; font-size: 0.76rem; font-weight: 600;
+      cursor: pointer; text-align: center;
+    }
+    .btn-alert:active { background: var(--warning); color: #000; border-color: var(--warning); }
+
+    /* Card do Chat Integrado */
+    .chat-card {
+      flex: 1; min-height: 170px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 18px; display: flex; flex-direction: column; overflow: hidden;
+    }
+    .chat-header-mini {
+      padding: 8px 14px; background: var(--surface-light); border-bottom: 1px solid var(--border);
+      font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;
+    }
+    .chat-feed {
+      flex: 1; padding: 10px 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
+    }
+    .msg {
+      max-width: 85%; padding: 8px 12px; border-radius: 12px; font-size: 0.84rem; line-height: 1.35;
+    }
+    .msg.mine { align-self: flex-end; background: var(--accent); color: #fff; border-bottom-right-radius: 3px; }
+    .msg.other { align-self: flex-start; background: var(--surface-light); color: #f1f5f9; border-bottom-left-radius: 3px; }
+    .msg.alert {
+      align-self: center; max-width: 96%; background: rgba(245, 158, 11, 0.15);
+      border: 1px solid var(--warning); color: #fcd34d; font-weight: 700; text-align: center; font-size: 0.8rem;
+    }
+    .msg.sys { align-self: center; font-size: 0.72rem; color: var(--muted); }
+    .msg-author { font-size: 0.68rem; font-weight: 700; color: #93c5fd; display: block; margin-bottom: 2px; }
+    .msg-time { font-size: 0.62rem; opacity: 0.75; margin-left: 6px; }
+
+    .chat-input-row {
+      display: flex; gap: 8px; padding: 8px 10px; background: var(--bg); border-top: 1px solid var(--border);
+    }
+    .chat-input-row input { padding: 10px 12px; border-radius: 10px; font-size: 0.88rem; }
+    .btn-send {
+      background: var(--accent); color: #fff; border: none; border-radius: 10px;
+      padding: 0 16px; font-weight: 700; font-size: 0.9rem; cursor: pointer;
     }
 
-    /* Modais (Canais e Checklist) */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.75);
-      z-index: 50; align-items: flex-end; justify-content: center;
+    /* ================= ABAS 2 e 3: CANAIS E CHECKLIST ================= */
+    .scroll-pane { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+    .section-title { font-size: 0.8rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+    table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 14px; overflow: hidden; font-size: 0.85rem; border: 1px solid var(--border); }
+    th { background: var(--surface-light); color: var(--accent); text-align: left; padding: 11px 10px; font-size: 0.76rem; }
+    td { padding: 10px; border-bottom: 1px solid var(--border); }
+    .ch-id { font-weight: 800; color: var(--warning); width: 58px; }
+
+    .chk-box {
+      background: var(--surface); border: 1px solid var(--border); padding: 13px;
+      border-radius: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.88rem; cursor: pointer;
     }
-    .modal-sheet {
-      background: var(--wa-header); width: 100%; max-width: 500px; max-height: 80vh;
-      border-radius: 18px 18px 0 0; padding: 18px; overflow-y: auto;
-      display: flex; flex-direction: column; gap: 12px;
+    .chk-box input { width: 19px; height: 19px; accent-color: var(--success); }
+    .chk-box.done { opacity: 0.45; text-decoration: line-through; }
+
+    /* Menu Inferior */
+    nav {
+      background: var(--surface); border-top: 1px solid var(--border); height: 60px; display: flex;
     }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #374151; padding-bottom: 10px; }
-    .close-modal { background: none; border: none; color: var(--wa-muted); font-size: 1.4rem; cursor: pointer; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-    th { text-align: left; color: var(--wa-green); padding: 8px; border-bottom: 1px solid #374151; }
-    td { padding: 9px 8px; border-bottom: 1px solid #2a3942; }
-    .ch-tag { color: #fbbf24; font-weight: bold; }
-    .chk-row { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--wa-bg); border-radius: 8px; font-size: 0.88rem; cursor: pointer; }
-    .chk-row input { width: 18px; height: 18px; accent-color: var(--wa-green); }
+    .nav-item {
+      flex: 1; background: none; border: none; color: var(--muted);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 600; gap: 3px; cursor: pointer;
+    }
+    .nav-item.active { color: var(--accent); border-top: 3px solid var(--accent); }
+    .nav-item span.ico { font-size: 1.2rem; }
   </style>
 </head>
 <body>
 
-  <!-- TELA DE ENTRADA -->
+  <!-- TELA INICIAL -->
   <div id="login-screen">
-    <div class="login-card">
-      <div class="login-title">
-        <h2>🎛️ Som & Mídia — IASD Araruama</h2>
-        <p>Chat & Rádio Comunicador da Equipe</p>
+    <div class="card-login">
+      <div class="logo-box">
+        <div class="logo-icon">🎛️</div>
+        <div>
+          <h1>ServiceComms</h1>
+          <p>IASD Araruama • Som & Mídia</p>
+        </div>
       </div>
+
       <div>
-        <label>SEU NOME OU FUNÇÃO NO CULTO</label>
+        <label>Sua Posição / Função</label>
         <select id="role-select">
           <option value="Mesa de Som">🎛️ Mesa de Som</option>
           <option value="Palco / Retorno">🎤 Palco / Retorno</option>
           <option value="Transmissão / Live">📹 Transmissão / Live</option>
-          <option value="Projeção / Sonoplastia">💻 Projeção / Sonoplastia</option>
-          <option value="Apoio / Diáconos">📋 Apoio / Diáconos</option>
-        </select>
-      </div>
-      <div>
-        <label>GRUPO DA IGREJA</label>
-        <input type="text" id="room-input" value="iasd-araruama-som">
-      </div>
-      <button class="btn-enter" onclick="entrarNoGrupo()">Entrar na Conversa</button>
-    </div>
-  </div>
-
-  <!-- TELA DO CHAT ESTILO WHATSAPP -->
-  <div id="app-screen">
-    <header>
-      <div class="group-info">
-        <div class="group-avatar">🎛️</div>
-        <div class="group-text">
-          <h1>Som & Mídia — IASD Araruama</h1>
-          <div class="group-status" id="header-status">Você (Online) • Toque e segure 🎙️ para falar</div>
-        </div>
-      </div>
-      <div class="header-actions">
-        <button class="icon-btn" onclick="abrirModal('modal-canais')">🎛️ Canais</button>
-        <button class="icon-btn" onclick="abrirModal('modal-check')">✅ Check</button>
-      </div>
-    </header>
-
-    <!-- FAIXA DE ALERTAS RÁPIDOS -->
-    <div class="quick-bar">
-      <button class="chip-alert" onclick="enviarAlerta('🔊 Mais retorno no palco')">🔊 Mais Retorno</button>
-      <button class="chip-alert" onclick="enviarAlerta('🎤 Falha no mic / Microfonia')">🎤 Falha no Mic</button>
-      <button class="chip-alert" onclick="enviarAlerta('🔋 Trocar pilha urgente')">🔋 Pilha Fraca</button>
+          <option value="Projeção / Letras">💻 Projeção / Letras</option>
