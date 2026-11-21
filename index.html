@@ -7,212 +7,264 @@
   <script src="https://unpkg.com"></script>
   <style>
     :root {
-      --bg-dark: #060913;
-      --bg-card: #111827;
-      --bg-elevated: #1e293b;
-      --primary: #0ea5e9;
-      --primary-dark: #0284c7;
-      --danger: #ef4444;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --border: #1e293b;
+      --bg-dark: #060913; --bg-card: #111827; --bg-elevated: #1e293b;
+      --primary: #0ea5e9; --danger: #ef4444; --success: #10b981;
+      --warning: #f59e0b; --text-main: #f8fafc; --text-muted: #94a3b8; --border: #1e293b;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background-color: var(--bg-dark); color: var(--text-main); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-
-    /* Cabeçalho */
-    header {
-      background: linear-gradient(180deg, #111827 0%, #090d16 100%);
-      padding: 14px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid var(--border);
-    }
+    header { background: linear-gradient(180deg, #111827 0%, #090d16 100%); padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
     .brand { display: flex; align-items: center; gap: 10px; }
-    .brand-icon {
-      width: 36px; height: 36px; border-radius: 10px;
-      background: linear-gradient(135deg, #0ea5e9, #2563eb);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
-    }
-    .brand-text h1 { font-size: 0.95rem; font-weight: 700; color: #fff; letter-spacing: 0.3px; }
+    .brand-icon { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, #0ea5e9, #2563eb); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+    .brand-text h1 { font-size: 0.95rem; font-weight: 700; color: #fff; }
     .brand-text p { font-size: 0.72rem; color: var(--primary); font-weight: 500; }
-    .online-pill {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      color: #34d399;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      display: flex; align-items: center; gap: 5px;
-    }
-    .dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; animation: pulse 2s infinite; }
-
-    @keyframes pulse {
-      0% { transform: scale(0.95); opacity: 0.8; }
-      50% { transform: scale(1.2); opacity: 1; }
-      100% { transform: scale(0.95); opacity: 0.8; }
-    }
-
-    /* Tela de Login */
-    #login-screen {
-      flex: 1; display: flex; flex-direction: column; justify-content: center;
-      padding: 25px; gap: 18px; max-width: 420px; margin: 0 auto; width: 100%;
-    }
-    .login-card {
-      background: var(--bg-card); padding: 24px; border-radius: 18px;
-      border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-      display: flex; flex-direction: column; gap: 16px;
-    }
+    .online-pill { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; padding: 4px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; display: flex; align-items: center; gap: 5px; }
+    .dot { width: 7px; height: 7px; background: #10b981; border-radius: 50%; }
+    #login-screen { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 25px; max-width: 420px; margin: 0 auto; width: 100%; }
+    .login-card { background: var(--bg-card); padding: 24px; border-radius: 18px; border: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; }
     label { font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-bottom: 6px; display: block; }
-    input, select {
-      padding: 14px; border-radius: 12px; border: 1px solid #334155;
-      background: #090d16; color: white; font-size: 0.95rem; width: 100%; outline: none;
-    }
-    input:focus, select:focus { border-color: var(--primary); }
-    .btn-primary {
-      background: linear-gradient(135deg, #0ea5e9, #0284c7);
-      color: white; padding: 15px; border-radius: 12px; border: none;
-      font-weight: 700; font-size: 1rem; cursor: pointer;
-      box-shadow: 0 4px 15px rgba(14, 165, 233, 0.35);
-    }
-    .btn-primary:active { transform: scale(0.98); }
-
-    /* Container Principal */
+    input, select { padding: 14px; border-radius: 12px; border: 1px solid #334155; background: #090d16; color: white; font-size: 0.95rem; width: 100%; outline: none; }
+    .btn-primary { background: linear-gradient(135deg, #0ea5e9, #0284c7); color: white; padding: 15px; border-radius: 12px; border: none; font-weight: 700; font-size: 1rem; cursor: pointer; }
     #app-screen { display: none; flex: 1; flex-direction: column; height: calc(100vh - 65px); }
     .tab-content { display: none; flex: 1; flex-direction: column; overflow: hidden; }
     .tab-content.active { display: flex; }
-
-    /* ABA 1: RÁDIO */
-    .radio-wrapper {
-      flex: 1; display: flex; flex-direction: column; justify-content: space-between;
-      padding: 16px; overflow-y: auto; gap: 14px;
-    }
-    .active-speaker-box {
-      background: var(--bg-card); border: 1px solid var(--border);
-      border-radius: 12px; padding: 12px; text-align: center;
-      font-size: 0.85rem; color: var(--text-muted);
-      transition: 0.2s;
-    }
-    .active-speaker-box.receiving {
-      background: rgba(16, 185, 129, 0.15); border-color: #10b981; color: #34d399; font-weight: bold;
-    }
-
+    .radio-wrapper { flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: 16px; overflow-y: auto; gap: 14px; }
+    .active-speaker-box { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 12px; text-align: center; font-size: 0.85rem; color: var(--text-muted); }
+    .active-speaker-box.receiving { background: rgba(16, 185, 129, 0.15); border-color: #10b981; color: #34d399; font-weight: bold; }
     .ptt-area { display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 10px 0; }
-    .ptt-ring {
-      width: 200px; height: 200px; border-radius: 50%;
-      background: rgba(239, 68, 68, 0.08);
-      display: flex; align-items: center; justify-content: center;
-      border: 1px solid rgba(239, 68, 68, 0.2);
-      transition: 0.2s;
-    }
-    .ptt-ring.talking {
-      background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.5);
-      box-shadow: 0 0 40px rgba(16, 185, 129, 0.3);
-    }
-    #ptt-btn {
-      width: 168px; height: 168px; border-radius: 50%;
-      background: linear-gradient(145deg, #ef4444, #b91c1c);
-      color: white; font-weight: 800; font-size: 0.95rem; letter-spacing: 0.5px;
-      border: 4px solid #7f1d1d; cursor: pointer;
-      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4);
-      user-select: none; -webkit-user-select: none; touch-action: manipulation;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
-    }
-    #ptt-btn.talking {
-      background: linear-gradient(145deg, #10b981, #047857);
-      border-color: #064e3b; transform: scale(0.95);
-      box-shadow: 0 8px 30px rgba(16, 185, 129, 0.6);
-    }
+    .ptt-ring { width: 195px; height: 195px; border-radius: 50%; background: rgba(239, 68, 68, 0.08); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(239, 68, 68, 0.2); }
+    .ptt-ring.talking { background: rgba(16, 185, 129, 0.15); border-color: #10b981; box-shadow: 0 0 35px rgba(16, 185, 129, 0.3); }
+    #ptt-btn { width: 165px; height: 165px; border-radius: 50%; background: linear-gradient(145deg, #ef4444, #b91c1c); color: white; font-weight: 800; font-size: 0.95rem; border: 4px solid #7f1d1d; cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: manipulation; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+    #ptt-btn.talking { background: linear-gradient(145deg, #10b981, #047857); border-color: #064e3b; transform: scale(0.95); }
     .mic-icon { font-size: 2rem; }
     .ptt-hint { margin-top: 10px; font-size: 0.8rem; color: var(--text-muted); }
-
     .section-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; margin-bottom: 8px; }
     .alerts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .alert-btn {
-      background: var(--bg-card); color: #e2e8f0; padding: 12px 10px;
-      border-radius: 12px; font-size: 0.8rem; font-weight: 600;
-      border: 1px solid var(--border); cursor: pointer;
-      display: flex; align-items: center; gap: 8px; transition: 0.15s;
-    }
-    .alert-btn:active { background: var(--warning); color: #000; border-color: var(--warning); transform: scale(0.97); }
-
-    /* ABA 2: CHAT */
-    .mini-radio-bar {
-      background: #111827; padding: 8px 14px; border-bottom: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: center;
-    }
+    .alert-btn { background: var(--bg-card); color: #e2e8f0; padding: 12px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; border: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .alert-btn:active { background: var(--warning); color: #000; }
+    .mini-radio-bar { background: #111827; padding: 8px 14px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
     .mini-radio-bar span { font-size: 0.78rem; color: var(--text-muted); }
-    #mini-ptt-btn {
-      background: #ef4444; color: white; border: none; padding: 7px 14px;
-      border-radius: 20px; font-size: 0.78rem; font-weight: 700;
-      user-select: none; -webkit-user-select: none; touch-action: manipulation;
-    }
+    #mini-ptt-btn { background: #ef4444; color: white; border: none; padding: 7px 14px; border-radius: 20px; font-size: 0.78rem; font-weight: 700; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
     #mini-ptt-btn.talking { background: #10b981; }
-
-    .chat-messages {
-      flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;
-      background: radial-gradient(circle at top, #0f172a 0%, #060913 100%);
-    }
-    .msg-bubble {
-      max-width: 82%; padding: 10px 14px; border-radius: 16px; font-size: 0.88rem; line-height: 1.4;
-      position: relative; word-wrap: break-word;
-    }
-    .msg-mine {
-      align-self: flex-end; background: linear-gradient(135deg, #0284c7, #0369a1);
-      color: white; border-bottom-right-radius: 4px;
-    }
-    .msg-other {
-      align-self: flex-start; background: var(--bg-elevated);
-      color: #f1f5f9; border-bottom-left-radius: 4px; border: 1px solid #334155;
-    }
-    .msg-alert {
-      align-self: center; max-width: 95%; background: rgba(245, 158, 11, 0.15);
-      border: 1px solid #f59e0b; color: #fcd34d; text-align: center; font-weight: 700; font-size: 0.82rem;
-    }
-    .msg-system {
-      align-self: center; font-size: 0.72rem; color: var(--text-muted); background: rgba(255,255,255,0.04);
-      padding: 4px 12px; border-radius: 12px;
-    }
+    .chat-messages { flex: 1; padding: 14px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; background: #060913; }
+    .msg-bubble { max-width: 82%; padding: 10px 14px; border-radius: 16px; font-size: 0.88rem; line-height: 1.4; word-wrap: break-word; }
+    .msg-mine { align-self: flex-end; background: #0284c7; color: white; border-bottom-right-radius: 4px; }
+    .msg-other { align-self: flex-start; background: var(--bg-elevated); color: #f1f5f9; border-bottom-left-radius: 4px; border: 1px solid #334155; }
+    .msg-alert { align-self: center; max-width: 95%; background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fcd34d; text-align: center; font-weight: 700; font-size: 0.82rem; }
+    .msg-system { align-self: center; font-size: 0.72rem; color: var(--text-muted); background: rgba(255,255,255,0.04); padding: 4px 12px; border-radius: 12px; }
     .msg-sender { font-size: 0.7rem; font-weight: 700; color: #38bdf8; margin-bottom: 3px; display: block; }
     .msg-time { font-size: 0.65rem; opacity: 0.7; display: block; text-align: right; margin-top: 4px; }
-
-    .chat-bar {
-      background: var(--bg-card); padding: 10px 12px; border-top: 1px solid var(--border);
-      display: flex; gap: 8px; align-items: center;
-    }
-    .chat-bar input {
-      flex: 1; padding: 11px 14px; border-radius: 22px; background: #090d16;
-      border: 1px solid #334155; font-size: 0.9rem;
-    }
-    .send-btn {
-      width: 42px; height: 42px; border-radius: 50%; background: var(--primary);
-      color: white; border: none; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; cursor: pointer;
-    }
-
-    /* ABAS 3 e 4: CANAIS E CHECKLIST */
+    .chat-bar { background: var(--bg-card); padding: 10px 12px; border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: center; }
+    .chat-bar input { flex: 1; padding: 11px 14px; border-radius: 22px; background: #090d16; border: 1px solid #334155; font-size: 0.9rem; }
+    .send-btn { width: 42px; height: 42px; border-radius: 50%; background: var(--primary); color: white; border: none; font-size: 1.1rem; cursor: pointer; }
     .scroll-area { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-    .channel-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 12px; overflow: hidden; font-size: 0.85rem; border: 1px solid var(--border); }
-    .channel-table th { background: #1e293b; color: var(--primary); text-align: left; padding: 12px 10px; font-size: 0.78rem; text-transform: uppercase; }
+    .channel-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border-radius: 12px; overflow: hidden; font-size: 0.85rem; }
+    .channel-table th { background: #1e293b; color: var(--primary); text-align: left; padding: 12px 10px; font-size: 0.78rem; }
     .channel-table td { padding: 11px 10px; border-bottom: 1px solid var(--border); }
     .ch-num { font-weight: 800; color: var(--warning); width: 60px; }
-
-    .check-item {
-      background: var(--bg-card); padding: 14px; border-radius: 12px;
-      display: flex; align-items: center; gap: 12px; border: 1px solid var(--border);
-      font-size: 0.88rem; cursor: pointer; transition: 0.2s;
-    }
+    .check-item { background: var(--bg-card); padding: 14px; border-radius: 12px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--border); font-size: 0.88rem; cursor: pointer; }
     .check-item input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--success); }
     .check-item.done { opacity: 0.45; text-decoration: line-through; }
+    nav { background: var(--bg-card); display: flex; border-top: 1px solid var(--border); height: 64px; }
+    .nav-btn { flex: 1; background: none; border: none; color: var(--text-muted); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 600; gap: 4px; position: relative; cursor: pointer; }
+    .nav-btn.active { color: var(--primary); border-top: 3px solid var(--primary); }
+    .nav-icon { font-size: 1.25rem; }
+    .unread-badge { position: absolute; top: 8px; right: 24%; background: var(--danger); color: white; font-size: 0.65rem; font-weight: 800; padding: 2px 6px; border-radius: 10px; display: none; }
+  </style>
+</head>
+</html><body>
+  <header>
+    <div class="brand">
+      <div class="brand-icon">🎛️</div>
+      <div class="brand-text">
+        <h1>IASD ARARUAMA</h1>
+        <p>Som & Comunicação</p>
+      </div>
+    </div>
+    <div class="online-pill">
+      <div class="dot"></div>
+      <span id="peers-count">1 Online</span>
+    </div>
+  </header>
 
-    /* NAVEGAÇÃO INFERIOR */
-    nav {
-      background: var(--bg-card); display: flex; border-top: 1px solid var(--border); height: 64px;
-      padding-bottom: env(safe-area-inset-bottom);
+  <div id="login-screen">
+    <div class="login-card">
+      <div>
+        <label>SUA FUNÇÃO NO CULTO</label>
+        <select id="role-select">
+          <option value="Mesa de Som">🎛️ Mesa de Som</option>
+          <option value="Palco / Retorno">🎤 Palco / Retorno</option>
+          <option value="Transmissão / Live">📹 Transmissão / Live</option>
+          <option value="Projeção / Sonoplastia">💻 Projeção / Sonoplastia</option>
+          <option value="Apoio / Diáconos">📋 Apoio / Diáconos</option>
+        </select>
+      </div>
+      <div>
+        <label>CÓDIGO DA SALA DA IGREJA</label>
+        <input type="text" id="room-input" value="iasd-araruama-som">
+      </div>
+      <button class="btn-primary" onclick="entrarNaSala()">Entrar no Rádio e Chat</button>
+    </div>
+  </div>
+
+  <div id="app-screen">
+    <div id="tab-radio" class="tab-content active">
+      <div class="radio-wrapper">
+        <div class="active-speaker-box" id="speaker-status">🎧 Canal livre — Ninguém falando no momento</div>
+        <div class="ptt-area">
+          <div class="ptt-ring" id="ptt-ring">
+            <button id="ptt-btn"><span class="mic-icon">🎙️</span><span>SEGURE PARA<br>FALAR</span></button>
+          </div>
+          <span class="ptt-hint">Conectado como: <strong id="my-role-label" style="color:#fff"></strong></span>
+        </div>
+        <div>
+          <div class="section-label">⚡ Alertas Rápidos (Notifica na Tela)</div>
+          <div class="alerts-grid">
+            <button class="alert-btn" onclick="enviarAlerta('🔊 Mais retorno no palco')">🔊 Mais Retorno</button>
+            <button class="alert-btn" onclick="enviarAlerta('🎤 Falha no mic / Microfonia')">🎤 Falha no Mic</button>
+            <button class="alert-btn" onclick="enviarAlerta('🔋 Trocar pilha urgente')">🔋 Bateria Fraca</button>
+            <button class="alert-btn" onclick="enviarAlerta('🙏 Pregador subindo ao púlpito')">🙏 Pregador Subindo</button>
+            <button class="alert-btn" onclick="enviarAlerta('🎵 Soltar fundo / Playback')">🎵 Soltar Áudio</button>
+            <button class="alert-btn" onclick="enviarAlerta('📹 Cortar câmera para o púlpito')">📹 Cortar Câmera</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-chat" class="tab-content">
+      <div class="mini-radio-bar">
+        <span>🎙️ Rádio rápido no chat:</span>
+        <button id="mini-ptt-btn">SEGURE P/ FALAR</button>
+      </div>
+      <div class="chat-messages" id="chat-box">
+        <div class="msg-system">Bem-vindo ao chat da equipe. Use fones de ouvido durante o culto.</div>
+      </div>
+      <div class="chat-bar">
+        <input type="text" id="msg-input" placeholder="Digite uma mensagem..." onkeypress="if(event.key==='Enter') enviarTexto()">
+        <button class="send-btn" onclick="enviarTexto()">➤</button>
+      </div>
+    </div>
+
+    <div id="tab-canais" class="tab-content">
+      <div class="scroll-area">
+        <div class="section-label">🎛️ Mapa Padrão da Mesa de Som</div>
+        <table class="channel-table">
+          <thead><tr><th>Canal</th><th>Instrumento / Mic</th><th>Obs.</th></tr></thead>
+          <tbody>
+            <tr><td class="ch-num">CH 01</td><td>Mic Púlpito (Pregador)</td><td>Cortar graves</td></tr>
+            <tr><td class="ch-num">CH 02</td><td>Mic Sem Fio 1 (Direção)</td><td>Pilha AA</td></tr>
+            <tr><td class="ch-num">CH 03</td><td>Mic Sem Fio 2 (Apoio)</td><td>Pilha AA</td></tr>
+            <tr><td class="ch-num">CH 04</td><td>Vocal 1 (Soprano)</td><td>Com reverb</td></tr>
+            <tr><td class="ch-num">CH 05</td><td>Vocal 2 (Contralto)</td><td>Com reverb</td></tr>
+            <tr><td class="ch-num">CH 06</td><td>Vocal 3 (Tenor)</td><td>Com reverb</td></tr>
+            <tr><td class="ch-num">CH 07</td><td>Violão (Direct Box)</td><td>Phantom Off</td></tr>
+            <tr><td class="ch-num">CH 08</td><td>Teclado (L/R)</td><td>Estéreo</td></tr>
+            <tr><td class="ch-num">CH 09</td><td>PC Projeção / Vídeos</td><td>P2 / USB</td></tr>
+            <tr><td class="ch-num">CH 10</td><td>Retorno Palco (Aux 1)</td><td>Cuidado ganho</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="tab-checklist" class="tab-content">
+      <div class="scroll-area">
+        <div class="section-label">✅ Antes do Culto</div>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"> 1. Ligar estabilizador e mesa de som primeiro</label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"> 2. Ligar amplificadores e caixas por último</label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"> 3. Conferir pilhas dos microfones sem fio</label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"> 4. Testar áudio do computador (louvores/vídeos)</label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"> 5. Conferir áudio da transmissão (Live)</label>
+        <div class="section-label" style="margin-top: 8px;">🔒 Após o Culto</div>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"> 1. Baixar master e desligar caixas/potências</label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"> 2. Desligar microfones sem fio e guardar</label>
+        <label class="check-item" onclick="toggleCheck(this)"><input type="checkbox"> 3. Desligar a mesa e cobrir com a capa</label>
+      </div>
+    </div>
+
+    <nav>
+      <button class="nav-btn active" onclick="mudarAba('tab-radio', this)"><span class="nav-icon">🎙️</span><span>Rádio</span></button>
+      <button class="nav-btn" onclick="mudarAba('tab-chat', this)"><span class="nav-icon">💬</span><span>Chat</span><span class="unread-badge" id="chat-badge">0</span></button>
+      <button class="nav-btn" onclick="mudarAba('tab-canais', this)"><span class="nav-icon">🎛️</span><span>Canais</span></button>
+      <button class="nav-btn" onclick="mudarAba('tab-checklist', this)"><span class="nav-icon">✅</span><span>Checklist</span></button>
+    </nav>
+  </div>
+
+  <div id="audio-container"></div>
+
+  <script>
+    let peer, myRole = "", roomPrefix = "", localStream, connections = {}, calls = {}, unreadCount = 0, currentTab = 'tab-radio';
+    const maxSlots = 10;
+
+    function tocarBip(freq = 880, dur = 0.08) {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine'; osc.frequency.setValueAtTime(freq, ctx.currentTime);
+        gain.gain.setValueAtTime(0.08, ctx.currentTime);
+        osc.connect(gain); gain.connect(ctx.destination);
+        osc.start(); osc.stop(ctx.currentTime + dur);
+      } catch (e) {}
     }
-    .nav-btn {
+
+    function mudarAba(tabId, btn) {
+      currentTab = tabId;
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+      if (tabId === 'tab-chat') {
+        unreadCount = 0;
+        const badge = document.getElementById('chat-badge');
+        badge.style.display = 'none'; badge.innerText = '0';
+        const chatBox = document.getElementById('chat-box');
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    }
+
+    function notificarMensagemNova() {
+      if (currentTab !== 'tab-chat') {
+        unreadCount++;
+        const badge = document.getElementById('chat-badge');
+        badge.innerText = unreadCount; badge.style.display = 'block';
+      }
+    }
+
+    function toggleCheck(label) {
+      const cb = label.querySelector('input');
+      setTimeout(() => { cb.checked ? label.classList.add('done') : label.classList.remove('done'); }, 10);
+    }
+
+    async function entrarNaSala() {
+      myRole = document.getElementById('role-select').value;
+      roomPrefix = document.getElementById('room-input').value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+      if (!roomPrefix) return alert("Digite o código da sala!");
+      try {
+        localStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
+        localStream.getAudioTracks().enabled = false;
+      } catch (err) {
+        alert("Permita o acesso ao microfone no navegador para usar o rádio!");
+        return;
+      }
+      tocarBip(650, 0.1);
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app-screen').style.display = 'flex';
+      document.getElementById('my-role-label').innerText = myRole;
+      conectarSlot(1);
+    }
+
+    function conectarSlot(slot) {
+      if (slot > maxSlots) return alert("Sala cheia.");
+      const myId = `${roomPrefix}-slot-${slot}`;
+      peer = new Peer(myId);
+      peer.on('open', (id) => { adicionarMensagemSistema(`Você entrou como ${myRole}`); descobrirEquipe(id); });
+      peer.on('error', (err) => { if (err.type === 'unavailable-id') { peer.destroy(); conectarSlot(slot + 1); } });
+      peer.on('connection', (conn) => configurarConexaoDados(conn));
+      peer.on('call', (call) => { call.answer(localStream); configurarChamadaAudio(call); });
+    }
+
+    function descobrirEquipe(myId) {
+      for (let i = 1; i <= maxSlots; i++) {
+        const targetId = `${roomPrefix}-slot-${i}`;
+        if (targetId !== myId) {
+          const conn = peer.connect(targetId);
