@@ -6,190 +6,67 @@
   <title>ServiceComms - IASD Araruama</title>
   <script src="https://unpkg.com"></script>
   <style>
-    :root {
-      --bg: #0b0f19;
-      --surface: #131b2e;
-      --surface-light: #1c263e;
-      --accent: #3b82f6;
-      --accent-glow: rgba(59, 130, 246, 0.35);
-      --danger: #ef4444;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --text: #f8fafc;
-      --muted: #94a3b8;
-      --border: #232f4b;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    :root { --bg: #0b0f19; --surface: #131b2e; --surface-light: #1c263e; --accent: #3b82f6; --danger: #ef4444; --success: #10b981; --warning: #f59e0b; --text: #f8fafc; --muted: #94a3b8; --border: #232f4b; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: var(--bg); color: var(--text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
-
-    /* Tela de Entrada */
-    #login-screen {
-      flex: 1; display: flex; flex-direction: column; justify-content: center;
-      padding: 24px; max-width: 420px; margin: 0 auto; width: 100%;
-    }
-    .card-login {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
-      padding: 28px 24px; display: flex; flex-direction: column; gap: 18px;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
-    }
+    #login-screen { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 24px; max-width: 420px; margin: 0 auto; width: 100%; }
+    .card-login { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 26px 22px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
     .logo-box { display: flex; align-items: center; gap: 12px; }
-    .logo-icon {
-      width: 46px; height: 46px; border-radius: 14px;
-      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
-      display: flex; align-items: center; justify-content: center; font-size: 1.5rem;
-    }
-    .logo-box h1 { font-size: 1.15rem; font-weight: 800; color: #fff; }
+    .logo-icon { width: 44px; height: 44px; border-radius: 12px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+    .logo-box h1 { font-size: 1.1rem; font-weight: 800; color: #fff; }
     .logo-box p { font-size: 0.78rem; color: var(--accent); font-weight: 600; }
-    label { font-size: 0.75rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: block; }
-    input, select {
-      width: 100%; padding: 14px; border-radius: 12px; border: 1px solid var(--border);
-      background: var(--bg); color: #fff; font-size: 0.95rem; outline: none;
-    }
-    input:focus, select:focus { border-color: var(--accent); }
-    .btn-start {
-      background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff;
-      border: none; padding: 15px; border-radius: 12px; font-weight: 700;
-      font-size: 1rem; cursor: pointer; box-shadow: 0 6px 20px var(--accent-glow);
-    }
-
-    /* App Principal */
+    label { font-size: 0.75rem; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-bottom: 6px; display: block; }
+    input, select { width: 100%; padding: 13px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: #fff; font-size: 0.95rem; outline: none; }
+    .btn-start { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; border: none; padding: 15px; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; }
     #app-screen { display: none; flex: 1; flex-direction: column; height: 100vh; }
-
-    header {
-      background: var(--surface); padding: 12px 16px; border-bottom: 1px solid var(--border);
-      display: flex; justify-content: space-between; align-items: center;
-    }
+    header { background: var(--surface); padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
     .header-left h2 { font-size: 0.95rem; font-weight: 700; color: #fff; }
     .header-left span { font-size: 0.75rem; color: var(--accent); font-weight: 600; }
-    .status-badge {
-      background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.4);
-      color: #34d399; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700;
-    }
-
-    /* Abas */
+    .status-badge { background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.4); color: #34d399; padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
     .tab-pane { display: none; flex: 1; flex-direction: column; overflow: hidden; }
     .tab-pane.active { display: flex; }
-
-    /* ================= ABA 1: RÁDIO + CHAT UNIFICADOS ================= */
-    .main-grid {
-      flex: 1; display: flex; flex-direction: column; padding: 12px 14px;
-      gap: 10px; overflow-y: auto;
-    }
-
-    /* Lista de Online */
+    .main-grid { flex: 1; display: flex; flex-direction: column; padding: 12px 14px; gap: 10px; overflow-y: auto; }
     .online-strip { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
-    .online-strip::-webkit-scrollbar { display: none; }
-    .user-chip {
-      background: var(--surface); border: 1px solid var(--border);
-      padding: 5px 10px; border-radius: 20px; font-size: 0.75rem;
-      display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0;
-    }
+    .user-chip { background: var(--surface); border: 1px solid var(--border); padding: 5px 10px; border-radius: 20px; font-size: 0.75rem; display: flex; align-items: center; gap: 6px; white-space: nowrap; flex-shrink: 0; }
     .green-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--success); }
-
-    /* Card do Rádio PTT */
-    .radio-card {
-      background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
-      padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 10px;
-      position: relative;
-    }
-    .speaker-indicator {
-      width: 100%; text-align: center; padding: 6px 10px; border-radius: 10px;
-      background: var(--bg); font-size: 0.78rem; color: var(--muted); font-weight: 600;
-    }
-    .speaker-indicator.live {
-      background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4);
-    }
-
-    #ptt-btn {
-      width: 132px; height: 132px; border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #ef4444, #991b1b);
-      border: 5px solid #450a0a; color: #fff; font-weight: 800; font-size: 0.85rem;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
-      cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: manipulation;
-      box-shadow: 0 8px 25px rgba(239, 68, 68, 0.35); transition: 0.15s;
-    }
-    #ptt-btn.talking {
-      background: radial-gradient(circle at 30% 30%, #10b981, #065f46);
-      border-color: #022c22; transform: scale(0.95);
-      box-shadow: 0 0 35px rgba(16, 185, 129, 0.65);
-    }
-    #ptt-btn span.icon { font-size: 1.7rem; }
-
-    /* Botões de Alerta */
+    .radio-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .speaker-indicator { width: 100%; text-align: center; padding: 6px 10px; border-radius: 10px; background: var(--bg); font-size: 0.78rem; color: var(--muted); font-weight: 600; }
+    .speaker-indicator.live { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+    #ptt-btn { width: 130px; height: 130px; border-radius: 50%; background: radial-gradient(circle at 30% 30%, #ef4444, #991b1b); border: 5px solid #450a0a; color: #fff; font-weight: 800; font-size: 0.85rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; user-select: none; -webkit-user-select: none; touch-action: manipulation; }
+    #ptt-btn.talking { background: radial-gradient(circle at 30% 30%, #10b981, #065f46); border-color: #022c22; transform: scale(0.95); box-shadow: 0 0 30px rgba(16, 185, 129, 0.6); }
+    #ptt-btn span.icon { font-size: 1.6rem; }
     .alerts-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; width: 100%; }
-    .btn-alert {
-      background: var(--surface-light); border: 1px solid var(--border); color: #e2e8f0;
-      padding: 9px 8px; border-radius: 10px; font-size: 0.76rem; font-weight: 600;
-      cursor: pointer; text-align: center;
-    }
-    .btn-alert:active { background: var(--warning); color: #000; border-color: var(--warning); }
-
-    /* Card do Chat Integrado */
-    .chat-card {
-      flex: 1; min-height: 170px; background: var(--surface); border: 1px solid var(--border);
-      border-radius: 18px; display: flex; flex-direction: column; overflow: hidden;
-    }
-    .chat-header-mini {
-      padding: 8px 14px; background: var(--surface-light); border-bottom: 1px solid var(--border);
-      font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .chat-feed {
-      flex: 1; padding: 10px 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;
-    }
-    .msg {
-      max-width: 85%; padding: 8px 12px; border-radius: 12px; font-size: 0.84rem; line-height: 1.35;
-    }
+    .btn-alert { background: var(--surface-light); border: 1px solid var(--border); color: #e2e8f0; padding: 9px 8px; border-radius: 10px; font-size: 0.76rem; font-weight: 600; cursor: pointer; text-align: center; }
+    .btn-alert:active { background: var(--warning); color: #000; }
+    .chat-card { flex: 1; min-height: 165px; background: var(--surface); border: 1px solid var(--border); border-radius: 18px; display: flex; flex-direction: column; overflow: hidden; }
+    .chat-header-mini { padding: 8px 14px; background: var(--surface-light); border-bottom: 1px solid var(--border); font-size: 0.75rem; font-weight: 700; color: var(--muted); text-transform: uppercase; }
+    .chat-feed { flex: 1; padding: 10px 12px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+    .msg { max-width: 85%; padding: 8px 12px; border-radius: 12px; font-size: 0.84rem; line-height: 1.35; }
     .msg.mine { align-self: flex-end; background: var(--accent); color: #fff; border-bottom-right-radius: 3px; }
     .msg.other { align-self: flex-start; background: var(--surface-light); color: #f1f5f9; border-bottom-left-radius: 3px; }
-    .msg.alert {
-      align-self: center; max-width: 96%; background: rgba(245, 158, 11, 0.15);
-      border: 1px solid var(--warning); color: #fcd34d; font-weight: 700; text-align: center; font-size: 0.8rem;
-    }
+    .msg.alert { align-self: center; max-width: 96%; background: rgba(245, 158, 11, 0.15); border: 1px solid var(--warning); color: #fcd34d; font-weight: 700; text-align: center; font-size: 0.8rem; }
     .msg.sys { align-self: center; font-size: 0.72rem; color: var(--muted); }
     .msg-author { font-size: 0.68rem; font-weight: 700; color: #93c5fd; display: block; margin-bottom: 2px; }
     .msg-time { font-size: 0.62rem; opacity: 0.75; margin-left: 6px; }
-
-    .chat-input-row {
-      display: flex; gap: 8px; padding: 8px 10px; background: var(--bg); border-top: 1px solid var(--border);
-    }
+    .chat-input-row { display: flex; gap: 8px; padding: 8px 10px; background: var(--bg); border-top: 1px solid var(--border); }
     .chat-input-row input { padding: 10px 12px; border-radius: 10px; font-size: 0.88rem; }
-    .btn-send {
-      background: var(--accent); color: #fff; border: none; border-radius: 10px;
-      padding: 0 16px; font-weight: 700; font-size: 0.9rem; cursor: pointer;
-    }
-
-    /* ================= ABAS 2 e 3: CANAIS E CHECKLIST ================= */
+    .btn-send { background: var(--accent); color: #fff; border: none; border-radius: 10px; padding: 0 16px; font-weight: 700; font-size: 0.9rem; cursor: pointer; }
     .scroll-pane { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-    .section-title { font-size: 0.8rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
-    table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 14px; overflow: hidden; font-size: 0.85rem; border: 1px solid var(--border); }
+    .section-title { font-size: 0.8rem; color: var(--accent); font-weight: 700; text-transform: uppercase; }
+    table { width: 100%; border-collapse: collapse; background: var(--surface); border-radius: 14px; overflow: hidden; font-size: 0.85rem; }
     th { background: var(--surface-light); color: var(--accent); text-align: left; padding: 11px 10px; font-size: 0.76rem; }
     td { padding: 10px; border-bottom: 1px solid var(--border); }
     .ch-id { font-weight: 800; color: var(--warning); width: 58px; }
-
-    .chk-box {
-      background: var(--surface); border: 1px solid var(--border); padding: 13px;
-      border-radius: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.88rem; cursor: pointer;
-    }
+    .chk-box { background: var(--surface); border: 1px solid var(--border); padding: 13px; border-radius: 12px; display: flex; align-items: center; gap: 12px; font-size: 0.88rem; cursor: pointer; }
     .chk-box input { width: 19px; height: 19px; accent-color: var(--success); }
     .chk-box.done { opacity: 0.45; text-decoration: line-through; }
-
-    /* Menu Inferior */
-    nav {
-      background: var(--surface); border-top: 1px solid var(--border); height: 60px; display: flex;
-    }
-    .nav-item {
-      flex: 1; background: none; border: none; color: var(--muted);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-size: 0.72rem; font-weight: 600; gap: 3px; cursor: pointer;
-    }
+    nav { background: var(--surface); border-top: 1px solid var(--border); height: 60px; display: flex; }
+    .nav-item { flex: 1; background: none; border: none; color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 600; gap: 3px; cursor: pointer; }
     .nav-item.active { color: var(--accent); border-top: 3px solid var(--accent); }
     .nav-item span.ico { font-size: 1.2rem; }
   </style>
 </head>
 <body>
-
-  <!-- TELA INICIAL -->
   <div id="login-screen">
     <div class="card-login">
       <div class="logo-box">
@@ -199,7 +76,6 @@
           <p>IASD Araruama • Som & Mídia</p>
         </div>
       </div>
-
       <div>
         <label>Sua Posição / Função</label>
         <select id="role-select">
@@ -207,3 +83,32 @@
           <option value="Palco / Retorno">🎤 Palco / Retorno</option>
           <option value="Transmissão / Live">📹 Transmissão / Live</option>
           <option value="Projeção / Letras">💻 Projeção / Letras</option>
+          <option value="Apoio / Diáconos">📋 Apoio / Diáconos</option>
+        </select>
+      </div>
+      <div>
+        <label>Sala da Equipe</label>
+        <input type="text" id="room-input" value="iasd-araruama-som">
+      </div>
+      <button class="btn-start" onclick="conectarApp()">Conectar Rádio & Chat</button>
+    </div>
+  </div>
+  <div id="app-screen">
+    <header>
+      <div class="header-left">
+        <h2>IASD Araruama — Som</h2>
+        <span id="my-role-tag">Mesa de Som</span>
+      </div>
+      <div class="status-badge" id="online-counter">● 1 Online</div>
+    </header>
+    <div id="pane-main" class="tab-pane active">
+      <div class="main-grid">
+        <div class="online-strip" id="online-list">
+          <div class="user-chip"><span class="green-dot"></span><span id="me-chip">Você</span></div>
+        </div>
+        <div class="radio-card">
+          <div class="speaker-indicator" id="speaker-banner">🎧 Canal livre — Segure o botão para falar</div>
+          <button id="ptt-btn"><span class="icon">🎙️</span><span>SEGURE<br>PARA FALAR</span></button>
+          <div class="alerts-row">
+            <button class="btn-alert" onclick="dispararAlerta('🔊 Mais retorno no palco')">🔊 Mais Retorno</button>
+            <button class="btn-alert" onclick="dispararAlerta('🎤 Falha no mic / Microfonia')">🎤 Falha no Mic</button>
